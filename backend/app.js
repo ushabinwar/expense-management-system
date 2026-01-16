@@ -28,6 +28,7 @@ app.use(cookieparser());
 // router
 app.use("/", require("./routes/indexRouter"))
 app.use("/expense", require("./routes/expenseRouter"))
+app.use("/income", require("./routes/incomeRouter"))
  
 // error handling
 // app.all("/*", (req, res, next)=>{

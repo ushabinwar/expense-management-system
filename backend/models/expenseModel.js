@@ -2,13 +2,15 @@ const mongoose = require('mongoose')
 
 const expenseModel = new mongoose.Schema({
     user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
-        required:true,
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"user",
+      required:true,
     },
     amount:{
-        type:Number,
-        required:[true, "Amount is required"],
+      type:Number,
+      required:[true, "Amount is required"],
+      min: [1, "Amount must not be less than 1"],
+
     },
     category: {
       type: String,
