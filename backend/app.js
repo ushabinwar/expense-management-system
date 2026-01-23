@@ -2,6 +2,7 @@ require("dotenv").config({path:"./.env"})
 const express = require("express")
 const ErrorHandler = require("./utils/ErrorHandler");
 const { generateErrors } = require("./middlewares/error");
+const cors = require("cors");
 const app = express()
 
 //db connection
@@ -10,6 +11,12 @@ require("./models/database").connectDatabase()
 // logger
 const logger = require("morgan");
 app.use(logger("tiny"))
+
+//cors
+app.use(cors({
+  origin: "http://localhost:5173", // frontend
+  credentials: true,               // VERY IMPORTANT
+}));
 
 //body parser
 app.use(express.json())
