@@ -9,17 +9,20 @@ import SideNav from './components/SideNav'
 import Dashboard from './components/Dashboard'
 import Expense from './components/Expense'
 import DashboardLayout from './components/Layouts/DashboardLayout'
+import Nav from './components/Nav'
+import CreateExpense from './components/Expense/CreateExpense'
 
 function App() {
   return(
     <div>
-      <ToastContainer />
+      <ToastContainer />      
       <Routes>
         <Route path="/" element={<Auth />} />
-  
-        <Route element={<DashboardLayout/>}>
+        
+        <Route element={<DashboardLayout/>}>       
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/expense" element={<Expense />} />
+          <Route path="/expense/create" element={<CreateExpense />} />
          
         </Route>
       </Routes>

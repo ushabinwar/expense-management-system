@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import SideNav from "../SideNav";
+import Nav from "../Nav";
 
 const DashboardLayout = () => {
   return (
@@ -8,7 +9,8 @@ const DashboardLayout = () => {
       <SideNav />
 
       {/* Right Content Area */}
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+      <div className="flex-1 px-4 py-2 bg-gray-100 min-h-screen">
+        <Nav/>
         <Outlet/>
       </div>
     </div>
