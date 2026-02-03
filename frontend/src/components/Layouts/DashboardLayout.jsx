@@ -9,7 +9,7 @@ const DashboardLayout = () => {
       <SideNav />
 
       {/* Right Content Area */}
-      <div className="flex-1 px-4 py-2 bg-gray-100 min-h-screen">
+      <div className="flex-1 px-4 py-2  bg-gray-100 max-h-screen overflow-x-auto">
         <Nav/>
         <Outlet/>
       </div>

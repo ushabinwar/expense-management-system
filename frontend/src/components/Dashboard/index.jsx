@@ -4,7 +4,7 @@ import SideNav from '../SideNav'
 const Dashboard = () => {
   return (
     <>
-      <div>Dashboard</div>
+      <div className='w-full h-full]'>Dashboard</div>
     </>
   )
 }

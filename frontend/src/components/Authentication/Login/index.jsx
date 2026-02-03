@@ -1,24 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineMail } from 'react-icons/hi'
 import { MdLock } from 'react-icons/md'
 import { signIn } from '../../../services/userService'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { asyncsignin } from '../../../redux/user/userAction'
 
 const Login = ({setIsSignup}) => {
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if(!email || !password){
+      return toast.error("Please provide all required fileds")
+    }
     const data = {
       email,
       password
     }
-    try{
-      const response = await signIn(data)
-      console.log("response:", response )
+    try{     
+      await dispatch(asyncsignin(data))
       toast.success("User Logged In Successfully")
       navigate("/dashboard")
     }catch(error){
@@ -26,6 +32,15 @@ const Login = ({setIsSignup}) => {
       console.error("error in login:", error)
     }
   }
+
+  // useEffect(() => {
+  //   if(isAuthenticated){
+  //     navigate("/dashboard")
+  //   }
+  // }, [navigate])
+  
+
+
 
   return (
     <div className="w-full px-8 md:px-10 ">

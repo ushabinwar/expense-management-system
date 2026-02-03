@@ -5,10 +5,13 @@ import { MdLock } from "react-icons/md";
 import { signUp } from '../../../services/userService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { asyncsignUp } from '../../../redux/user/userAction';
 
 
 
 const Register = ({setIsSignup}) => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -21,17 +24,16 @@ const Register = ({setIsSignup}) => {
       email, 
       password
     }
-    console.log("given data:", data)
     try{
-      const response = await signUp(data)
+      // const response = await signUp(data)
+      await dispatch(asyncsignUp(data))
       toast.success("User Created Successfully")
       navigate("/dashboard")
       
 
     }catch(error){
-      toast.error(error.response.data.message)
-      console.error("error in sighup:", error)
-
+        toast.error(error?.response?.data?.message)
+        console.error("error in signup:", error)
     }
   }
 

@@ -5,3 +5,9 @@ export const createExpense = async (data) => {
   return response;
 };
 
+export const getAllExpense = async () => {
+  const {data} = await api.get("/expense/getAllExpense");
+  console.log("data:",data)
+  return data;
+};
+

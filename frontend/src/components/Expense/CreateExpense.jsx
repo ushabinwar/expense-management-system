@@ -72,7 +72,7 @@ const CreateExpense = () => {
                     <input 
                         type="text"
                         className=" input-field"
-                        placeholder="Email"
+                        placeholder="Title"
                         value={title}
                         onChange={(e)=>setTitle(e.target.value)}
                     />
