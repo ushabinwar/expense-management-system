@@ -18,7 +18,6 @@ export const asyncsignUp = (newuser) => async (dispatch) => {
     try{
         const {data} = await signUp(newuser)
         dispatch(addUser(data?.user))
-        console.log("data:",data)
         return data
         
     }catch(err){

@@ -4,12 +4,16 @@ import { Link } from 'react-router-dom';
 import Table from '../Table';
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
-import { getAllExpense } from '../../services/expenseService';
+import { deleteExpense, getAllExpense } from '../../services/expenseService';
+import { useDispatch, useSelector } from 'react-redux';
+import { allExpense, expenseDelete } from '../../redux/expense/expenseAction';
+import { toast } from 'react-toastify';
 
 const Expense = () => {
-  const [data, setData] = useState([])
+  const dispatch = useDispatch()
+  // const [data, setData] = useState([])
+  const { expenses } = useSelector((state) => state.expense);
 
-  console.log("datastds:", data)
   const expenseColumns = [
     { header: "Title", accessor: "title" },
     { header: "Amount", accessor: "amount" },
@@ -18,7 +22,6 @@ const Expense = () => {
     { header: "Date",
       accessor: "date" ,
       render: (row) => {
-        console.log(row)
         const date = new Date(row.date);
         return date.toLocaleDateString("en-GB", {
           day: "2-digit",
@@ -44,7 +47,7 @@ const Expense = () => {
           onClick={() => handleDelete(row._id)}
           className="text-red-600 hover:text-red-800"
         >
-          <MdDelete size={18} />
+          <MdDelete size={18}/>
         </button>
       </div>
       )
@@ -52,100 +55,35 @@ const Expense = () => {
     
   ];
 
-   const expenseData = [
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Food",
-      amount: 250,
-      category: "Daily",
-      date: "20 Jan 2026",
-    },
-    {
-      title: "Travel",
-      amount: 1200,
-      category: "Transport",
-      date: "21 Jan 2026",
-    },
-    {
-      title: "Travel",
-      amount: 1200,
-      category: "Transport",
-      date: "21 Jan 2026",
-    },
-  ];
+   
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try{
+  //       const res = await getAllExpense()
+  //       setData(res?.allExpenses)
+  //     }catch(error){
+  //       console.error(error)
+  //     }
+
+  //   }
+  //   fetchData();
+  // }, [])
 
   useEffect(() => {
-    const fetchData = async () => {
-      try{
-        const res = await getAllExpense()
-        setData(res?.allExpenses)
-      }catch(error){
-        console.error(error)
-      }
+    dispatch(allExpense());
+  }, [dispatch]);
 
+  const handleDelete = async (id) => {
+    try{
+      await dispatch(expenseDelete(id))
+      toast.success("Deleted Successfully")
+    }catch(error){
+      console.error(error)
+      toast.error(error?.response?.data?.message)
     }
-    fetchData();
-  }, [])
+
+  }
   
 
   return (
@@ -156,10 +94,10 @@ const Expense = () => {
 
     </Link>
 
-    <div className='bg-red-500 '>
+    <div className=' '>
       <Table
         columns={expenseColumns}
-        data={data}
+        data={expenses}
       />
     </div>
   </div>

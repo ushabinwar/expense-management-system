@@ -3,9 +3,12 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { createExpense } from '../../services/expenseService';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { expenseCreate } from '../../redux/expense/expenseAction';
 
 
 const CreateExpense = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [title, setTitle] = useState("")
   const [amount, setAmount] = useState(0)
@@ -13,6 +16,8 @@ const CreateExpense = () => {
   const [paymentMode, setPaymentMode] = useState("");
   const [description, setDescription] = useState("")
   const [date, setDate] = useState()
+  const { expenses } = useSelector((state) => state.expense);
+  
   const categories = [
     { id: 1, name: "Food" },
     { id: 2, name: "Travel" },
@@ -46,12 +51,13 @@ const CreateExpense = () => {
         description
     }
     try{
-        const response = await createExpense(data)
-        toast.success(response?.data?.message)
+        const response = await dispatch(expenseCreate(data))
+        toast.success(response?.message)
+        navigate("/expense")
 
     }catch(error){
-        // toast.error(error?.message)
-        console.error(error.message)
+        toast.error(error?.response?.data?.message)
+        console.error(error)
     }
   }
 

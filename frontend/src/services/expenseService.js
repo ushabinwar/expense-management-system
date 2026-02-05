@@ -6,8 +6,13 @@ export const createExpense = async (data) => {
 };
 
 export const getAllExpense = async () => {
-  const {data} = await api.get("/expense/getAllExpense");
-  console.log("data:",data)
-  return data;
+  const response = await api.get("/expense/getAllExpense");
+  return response;
+};
+
+
+export const deleteExpense = async (id) => {
+  const response = await api.delete(`/expense/delete/${id}`);
+  return response;
 };
 
