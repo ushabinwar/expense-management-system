@@ -78,7 +78,7 @@ const Expense = () => {
   const handleDelete = async (id) => {
     try{
       await dispatch(expenseDelete(id))
-      toast.success("Deleted Successfully")
+      toast.success("Expense Deleted Successfully")
     }catch(error){
       console.error(error)
       toast.error(error?.response?.data?.message)

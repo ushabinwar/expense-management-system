@@ -13,6 +13,8 @@ import Nav from './components/Nav'
 import CreateExpense from './components/Expense/CreateExpense'
 import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import UpdateExpense from './components/Expense/UpdateExpense'
+import Income from './Income'
+import CreateIncome from './Income/CreateIncome'
 
 function App() {
   return(
@@ -32,6 +34,11 @@ function App() {
               <Route index element={<Expense />} />
               <Route path="create" element={<CreateExpense />} />
               <Route path="update/:id" element={<UpdateExpense />} />
+            </Route>
+
+            <Route path="/income">
+              <Route index element={<Income/>} />
+              <Route path="create" element={<CreateIncome />} />
             </Route>
 
           </Route>
