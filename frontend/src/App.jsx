@@ -11,21 +11,33 @@ import Expense from './components/Expense'
 import DashboardLayout from './components/Layouts/DashboardLayout'
 import Nav from './components/Nav'
 import CreateExpense from './components/Expense/CreateExpense'
+import ProtectedRoute from './components/Authentication/ProtectedRoute'
+import UpdateExpense from './components/Expense/UpdateExpense'
 
 function App() {
   return(
     <div>
       <ToastContainer />      
       <Routes>
+        {/* Auth Routes */}
         <Route path="/" element={<Auth />} />
-        
-        <Route element={<DashboardLayout/>}>       
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+      
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/expense" element={<Expense />} />
-          <Route path="/expense/create" element={<CreateExpense />} />
-         
+
+            <Route path="/expense">
+              <Route index element={<Expense />} />
+              <Route path="create" element={<CreateExpense />} />
+              <Route path="update/:id" element={<UpdateExpense />} />
+            </Route>
+
+          </Route>
         </Route>
       </Routes>
+
     </div>
 
   )

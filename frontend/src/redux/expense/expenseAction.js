@@ -1,5 +1,5 @@
-import { createExpense, deleteExpense, getAllExpense } from "../../services/expenseService";
-import { addExpense, removeExpense, setError, setExpenses } from "./expenseSlice";
+import { createExpense, deleteExpense, getAllExpense, updateExpense } from "../../services/expenseService";
+import { addExpense, removeExpense, setError, setExpenses, setUpdateExpesne } from "./expenseSlice";
 
 export const expenseCreate = (payload) => async (dispatch) => {
     try{
@@ -34,6 +34,20 @@ export const expenseDelete = (id) => async (dispatch) => {
     try{
         const {data} = await deleteExpense(id)
         dispatch(removeExpense(id))
+        return data;
+        
+    }catch(err){
+       
+        dispatch(setError(err?.response?.data?.message || "error in expense delete")); 
+        throw err;
+    }
+
+}
+
+export const asyncUpdateExpense = (payload, id) => async (dispatch) => {
+    try{
+        const {data} = await updateExpense(payload, id)
+        dispatch(setUpdateExpesne(data?.expense))
         return data;
         
     }catch(err){

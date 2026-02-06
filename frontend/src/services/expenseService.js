@@ -16,3 +16,8 @@ export const deleteExpense = async (id) => {
   return response;
 };
 
+export const updateExpense = async (data, id) => {
+  const response = await api.post(`/expense/update/${id}`, data);
+  return response;
+};
+

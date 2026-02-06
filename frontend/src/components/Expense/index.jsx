@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Table from '../Table';
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 
 const Expense = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   // const [data, setData] = useState([])
   const { expenses } = useSelector((state) => state.expense);
 
@@ -36,7 +37,7 @@ const Expense = () => {
       <div className="flex gap-3 justify-center">
         {/* Edit */}
         <button
-          onClick={() => handleEdit(row)}
+          onClick={()=>{navigate(`update/${row._id}`, { state: row })}}
           className="text-blue-600 hover:text-blue-800"
         >
           <MdEdit size={18} />

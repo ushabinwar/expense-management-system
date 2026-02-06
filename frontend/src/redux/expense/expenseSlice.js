@@ -15,7 +15,14 @@ export const expenseSlice = createSlice({
 
         },
         setExpenses: (state, action) => {
-          state.expenses = action.payload;
+            state.expenses = action.payload;
+        },
+        setUpdateExpesne : (state, action) =>{
+            const index = state.expenses.findIndex((exp)=> exp._id === action?.payload?._id)
+
+            if (index !== -1) {
+               state.expenses[index] = action.payload;
+            }
         },
         setLoading : (state, action) => {
             state.loading = true
@@ -35,6 +42,6 @@ export const expenseSlice = createSlice({
     }
 })
 
-export const {addExpense, setExpenses, removeExpense, resetError, setError, setLoading, resetLoading} = expenseSlice.actions;
+export const {addExpense, setExpenses, setUpdateExpesne, removeExpense, resetError, setError, setLoading, resetLoading} = expenseSlice.actions;
 
 export default expenseSlice.reducer;

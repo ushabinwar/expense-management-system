@@ -1,22 +1,27 @@
 import React, { useState } from 'react'
 import { FaArrowLeft } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
-import { createExpense } from '../../services/expenseService';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { expenseCreate } from '../../redux/expense/expenseAction';
+import { asyncUpdateExpense, expenseCreate } from '../../redux/expense/expenseAction';
+import { formatDate } from '../../../utils/helper';
 
 
-const CreateExpense = () => {
+const UpdateExpense = () => {
+  const location = useLocation();
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [title, setTitle] = useState("")
-  const [amount, setAmount] = useState(0)
-  const [category, setCategory] = useState("");
-  const [paymentMode, setPaymentMode] = useState("");
-  const [description, setDescription] = useState("")
-  const [date, setDate] = useState()
-  const { expenses } = useSelector((state) => state.expense);
+  const [title, setTitle] = useState(location?.state?.title || " ")
+  const [amount, setAmount] = useState(location?.state?.amount || 0)
+  const [category, setCategory] = useState(location?.state?.category || " ");
+  const [paymentMode, setPaymentMode] = useState(location?.state?.paymentMode || " ");
+  const [description, setDescription] = useState(location?.state?.description || " ")
+  const [date, setDate] = useState(
+    location?.state?.date ? formatDate(location.state.date) : ""
+  );
+
+
   
   const categories = [
     { id: 1, name: "Food" },
@@ -43,16 +48,16 @@ const CreateExpense = () => {
     if (!title || !amount || !category || !paymentMode) {
       return toast.error("Fill all the required details");
     }
-    const data = {
+    const payload = {
         title,
         amount,
         category,
         paymentMode,
-        description,
+        description, 
         date
     }
     try{
-        const response = await dispatch(expenseCreate(data))
+        const response = await dispatch(asyncUpdateExpense(payload, location?.state?._id))
         toast.success(response?.message)
         navigate("/expense")
 
@@ -66,7 +71,7 @@ const CreateExpense = () => {
     <div className='  p-3'>
         <Link to='/expense' className='flex items-center gap-2'>
             <FaArrowLeft size='20' color='green' />
-            <h1 className='font-medium'>Add Expense</h1>
+            <h1 className='font-medium'>Update Expense</h1>
         </Link>
 
         <div className='mt-5 '>
@@ -164,7 +169,7 @@ const CreateExpense = () => {
                 </div>
                 </div>
                 <button onClick={(e)=>submitHandler(e)} className='btn'>
-                    Create Expense
+                    Update Expense
                 </button>
             </form>
         </div>
@@ -173,4 +178,4 @@ const CreateExpense = () => {
   )
 }
 
-export default CreateExpense;
+export default UpdateExpense;
