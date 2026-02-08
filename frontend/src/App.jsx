@@ -15,6 +15,7 @@ import ProtectedRoute from './components/Authentication/ProtectedRoute'
 import UpdateExpense from './components/Expense/UpdateExpense'
 import Income from './Income'
 import CreateIncome from './Income/CreateIncome'
+import UpdateIncome from './Income/UpdateIncome'
 
 function App() {
   return(
@@ -39,6 +40,7 @@ function App() {
             <Route path="/income">
               <Route index element={<Income/>} />
               <Route path="create" element={<CreateIncome />} />
+              <Route path="update/:id" element={<UpdateIncome />} />
             </Route>
 
           </Route>

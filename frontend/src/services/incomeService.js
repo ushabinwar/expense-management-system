@@ -13,6 +13,10 @@ export const getAllIncome = async () => {
 
 export const deleteIncome = async (id) => {
   const {data} = await api.delete(`/income/delete/${id}`);
-  console.log("data2:",data)
+  return data;
+};
+
+export const updateIncome = async (payload, id) => {
+  const {data} = await api.post(`/income/update/${id}`, payload);
   return data;
 };
