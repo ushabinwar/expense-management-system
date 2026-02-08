@@ -3,18 +3,31 @@ import { IoIosAddCircleOutline } from 'react-icons/io'
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { Link } from 'react-router-dom'
 import Table from '../components/Table';
-import { asyncAllIncome } from '../redux/income/incomeAction';
+import { asyncAllIncome, asyncIncomeDelete } from '../redux/income/incomeAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const Income = () => {
   const dispatch = useDispatch()
   const {incomes} = useSelector((state) => state.income)
 
-  console.log("redux state:",incomes)
 
   useEffect(() => {
     dispatch(asyncAllIncome());
   }, [dispatch]);
+
+  const handleDelete = async (id) => {
+    console.log(id)
+    console.log("hey")
+    try{
+      await dispatch(asyncIncomeDelete(id))
+      toast.success("Expense Deleted Successfully")
+    }catch(error){
+      console.error(error)
+      toast.error(error?.response?.data?.message)
+    }
+  
+  }
 
   const incomeColumns = [
       { header: "Title", accessor: "title" },
@@ -44,7 +57,7 @@ const Income = () => {
   
           {/* Delete */}
           <button
-            // onClick={() => handleDelete(row._id)}
+            onClick={() => handleDelete(row._id)}
             className="text-red-600 hover:text-red-800"
           >
             <MdDelete size={18}/>
