@@ -1,6 +1,8 @@
 const { catchAsyncErrors } = require("../middlewares/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Expense = require("../models/expenseModel");
+const Income = require("../models/incomeModel");
+const mongoose = require("mongoose");
 
 exports.createExpense=  catchAsyncErrors(async (req, res, next) => {
     const {title, amount, category, paymentMode, description, date} = req.body;
@@ -76,6 +78,60 @@ exports.updateExpense = catchAsyncErrors(async (req, res, next) => {
         success:true,
         message:"Expense Updated Successfully",
         expense
+    })
+})
+
+exports.totalBalance = catchAsyncErrors(async (req, res, next) => { 
+    const expenseData =  await Expense.aggregate([
+        {
+            $match:{
+                user:new mongoose.Types.ObjectId(req.id)
+            }
+        },
+        {
+            $group:{
+                _id:null,
+                totalExpense:{$sum:"$amount"},
+                expenseCount: { $sum: 1 }
+            }
+        },
+       
+    ])
+
+    const incomeData =  await Income.aggregate([
+        {
+            $match:{
+                user:new mongoose.Types.ObjectId(req.id)
+            }
+        },
+        {
+            $group:{
+                _id:null,
+                totalIncome:{$sum:"$amount"},
+                incomeCount: { $sum: 1 }
+            }
+        },
+       
+    ])
+
+    const expenseTotal = expenseData[0]?.totalExpense || 0
+    const expenseCount = expenseData[0]?.expenseCount || 0
+
+    const incomeTotal = incomeData[0]?.totalIncome || 0
+    const incomeCount = incomeData[0]?.incomeCount || 0
+
+    const totalBalance = incomeTotal - expenseTotal
+
+    res.status(200).json({
+        success:true,
+        message:"Expense Updated Successfully",
+        data:{
+            expenseTotal,
+            expenseCount,
+            incomeTotal,
+            incomeCount, 
+            totalBalance
+        }
     })
 })
 
